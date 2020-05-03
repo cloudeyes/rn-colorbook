@@ -1,18 +1,20 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import MainNavigator from './navigations';
 
-export default function App() {
+const FavoritesScreen = () => {
   return (
     <View style={styles.container}>
-      <MainNavigator />
+      <Text>FavoritesScreen</Text>
     </View>
   );
-}
+};
+
+export default FavoritesScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

@@ -1,6 +1,8 @@
+__pycache__
 node_modules/**/*
 .expo/*
 npm-debug.*
+*.db
 *.jks
 *.p8
 *.p12

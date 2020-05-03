@@ -1,18 +1,20 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import MainNavigator from './navigations';
 
-export default function App() {
+const ColorDetailScreen = () => {
   return (
     <View style={styles.container}>
-      <MainNavigator />
+      <Text>ColorDetailScreen</Text>
     </View>
   );
-}
+};
+
+export default ColorDetailScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
