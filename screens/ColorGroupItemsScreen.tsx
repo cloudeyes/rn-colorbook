@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import { INavigationProp } from '../navigations';
+import { IStackNavigationProps } from '../navigations';
 
-const ColorGroupItemsScreen = (props: INavigationProp) => {
+const ColorGroupItemsScreen = (props: IStackNavigationProps) => {
   return (
     <View style={styles.container}>
       <Text>ColorGroupItemsScreen</Text>

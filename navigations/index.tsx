@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { createAppContainer, NavigationScreenProp } from 'react-navigation';
+import { createAppContainer, NavigationRoute } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import {
@@ -19,10 +19,6 @@ import { Ionicons } from '@expo/vector-icons';
 import FiltersScreen from '../screens/FiltersScreen';
 import { COLORS } from '../constants/Colors';
 
-export interface INavigationProp {
-  navigation: NavigationScreenProp<any, any>;
-}
-
 const IoniconsHeaderButton = (props: any) => (
   <HeaderButton
     {...props}
@@ -32,28 +28,44 @@ const IoniconsHeaderButton = (props: any) => (
   />
 );
 
+import { NavigationStackScreenProps } from 'react-navigation-stack';
+import {
+  NavigationDrawerScreenProps,
+  NavigationDrawerProp,
+} from 'react-navigation-drawer';
+import { NavigationParams } from 'react-navigation';
+
+export type IStackNavigationProps = NavigationStackScreenProps<any, any>;
+export type IDrawerNavigationProps = NavigationDrawerScreenProps<any, any>;
+export type IDrawerNavigation = NavigationDrawerProp<
+  NavigationRoute,
+  NavigationParams
+>;
+
+const HeaderMenuButton = (props: { navigation: IDrawerNavigation }) => (
+  <HeaderButtons HeaderButtonComponent={IoniconsHeaderButton}>
+    <Item
+      title="menu"
+      iconName="ios-menu"
+      onPress={() => props.navigation.toggleDrawer()}
+    />
+  </HeaderButtons>
+);
+
 const ColorGroupsNavigator = createStackNavigator({
   ColorGroups: {
     screen: ColorGroupsScreen,
-    navigationOptions: (props) => ({
+    navigationOptions: (props: any) => ({
       title: '색상 그룹',
-      headerLeft: (_) => (
-        <HeaderButtons HeaderButtonComponent={IoniconsHeaderButton}>
-          <Item
-            title="menu"
-            iconName="ios-menu"
-            onPress={() => (props as any).navigation.toggleDrawer()}
-          />
-        </HeaderButtons>
-      ),
+      headerLeft: (_) => <HeaderMenuButton navigation={props.navigation} />,
     }),
   },
   GroupItems: {
     screen: ColorGroupItemsScreen,
-    navigationOptions: {
+    navigationOptions: (props: any) => ({
       title: '색상 목록',
-      headerLeft: (props) => <Ionicons name="ios-menu" size={30} />,
-    },
+      // headerLeft: (_) => <HeaderMenuButton navigation={props.navigation} />,
+    }),
   },
   ColorDetail: {
     screen: ColorDetailScreen,
