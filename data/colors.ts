@@ -2,7 +2,7 @@
  * https://www.w3schools.com/colors/colors_groups.asp
  */
 
-const COLORS = [
+export const COLORS = [
   {
     id: 1,
     group: 'Pink',
@@ -990,6 +990,6 @@ const COLORS = [
     hex: '#000000',
     tags: { Dark: false, Light: false, Deep: false, Hot: false, Aqua: false },
   },
-]
+];
 
-export const COLOR_GROUPS = Array.from(new Set(COLORS.map((it) => it.group)))
+export const COLOR_GROUPS = Array.from(new Set(COLORS.map((it) => it.group)));

@@ -2,11 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 const ColorDetailScreen = () => {
-  return (
-    <View style={styles.container}>
-      <Text>ColorDetailScreen</Text>
-    </View>
-  );
+  return <View style={styles.container}></View>;
 };
 
 export default ColorDetailScreen;

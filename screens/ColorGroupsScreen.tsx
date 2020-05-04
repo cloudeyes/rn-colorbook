@@ -1,18 +1,12 @@
 import React, { useState } from 'react';
-import {
-  Text,
-  View,
-  FlatList,
-  TouchableOpacity,
-  TouchableNativeFeedback,
-  Platform,
-} from 'react-native';
-import { INavigationProps } from '../navigation';
-import { createStyle } from '../common/styles';
+import { Text, View, FlatList, Platform, ScrollView } from 'react-native';
 import { COLOR_GROUPS } from '../data/colors';
+import TouchableFeedback from '../components/TouchableFeedback';
 
-const TouchableFeedback =
-  Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity;
+import { useHeaderHeight } from 'react-navigation-stack';
+import { getTabBarHeight } from '../navigations/TabBar';
+import { Dimensions, StyleSheet } from 'react-native';
+import { IStackNavigationProps } from '../navigations';
 
 interface IShadowProps {
   rgb: any;
@@ -50,7 +44,7 @@ const shadow = ({
   });
 };
 
-const ColorGroupsScreen = (props: INavigationProps) => {
+const ColorGroupsScreen = (props: IStackNavigationProps) => {
   const [groups, setGroups] = useState(COLOR_GROUPS);
 
   /* fetch('http://192.168.1.6:8000/colors/groups')
@@ -59,10 +53,19 @@ const ColorGroupsScreen = (props: INavigationProps) => {
       setGroups(data);
     }); */
 
+  /** 화면 높이 구하기 */
+  const { height } = Dimensions.get('screen');
+  const headerHeight = useHeaderHeight();
+  const numRows = Math.round(groups.length / 2);
+  const initialItemHeight =
+    (height - headerHeight - getTabBarHeight() - 10) / numRows - 21;
+  const [itemHeight, setItemHeight] = useState(initialItemHeight);
+
   const renderColorGroup = (params: { item: string }) => {
     const { item } = params;
-    return (
-      <View style={styles.container}>
+
+    return !itemHeight ? null : (
+      <View style={styles.colorItemWrapper}>
         <TouchableFeedback
           style={{ flex: 1, alignSelf: 'stretch' }}
           onPress={() => {
@@ -76,6 +79,8 @@ const ColorGroupsScreen = (props: INavigationProps) => {
               styles.colorItem,
               {
                 backgroundColor: item.toLowerCase(),
+                height: itemHeight,
+                minHeight: itemHeight,
               },
             ]}
           >
@@ -97,7 +102,7 @@ const ColorGroupsScreen = (props: INavigationProps) => {
   };
 
   return (
-    <View style={{ marginTop: 5, marginBottom: 5 }}>
+    <View style={styles.container}>
       <FlatList
         keyExtractor={(item, _) => item}
         data={COLOR_GROUPS}
@@ -110,8 +115,12 @@ const ColorGroupsScreen = (props: INavigationProps) => {
 
 export default ColorGroupsScreen;
 
-const styles = createStyle({
+const styles = StyleSheet.create({
   container: {
+    marginTop: 5,
+    marginBottom: 5,
+  },
+  colorItemWrapper: {
     flex: 1,
     overflow: 'hidden',
     borderRadius: 10,

@@ -9,7 +9,7 @@ import {
   Item,
 } from 'react-navigation-header-buttons';
 
-import createTabNavigator from './tab';
+import createTabNavigator from './TabBar';
 
 import ColorGroupsScreen from '../screens/ColorGroupsScreen';
 import ColorGroupItemsScreen from '../screens/ColorGroupItemsScreen';
@@ -63,7 +63,7 @@ const ColorGroupsNavigator = createStackNavigator({
   GroupItems: {
     screen: ColorGroupItemsScreen,
     navigationOptions: (props: any) => ({
-      title: '색상 목록',
+      title: `${props.navigation.getParam('name')} 계열 색상`,
       // headerLeft: (_) => <HeaderMenuButton navigation={props.navigation} />,
     }),
   },
