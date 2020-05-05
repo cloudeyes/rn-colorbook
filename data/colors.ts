@@ -2,7 +2,15 @@
  * https://www.w3schools.com/colors/colors_groups.asp
  */
 
-export const COLORS = [
+export interface ColorItem {
+  id: number;
+  group: string;
+  name: string;
+  hex: string;
+  tags: { [key: string]: boolean };
+}
+
+export const WEB_COLORS: ColorItem[] = [
   {
     id: 1,
     group: 'Pink',
@@ -992,4 +1000,14 @@ export const COLORS = [
   },
 ];
 
-export const COLOR_GROUPS = Array.from(new Set(COLORS.map((it) => it.group)));
+export const COLOR_GROUPS = {} as { [key: string]: ColorItem[] };
+
+for (const item of WEB_COLORS) {
+  let group = COLOR_GROUPS[item.group];
+  if (!COLOR_GROUPS.hasOwnProperty(item.group)) {
+    COLOR_GROUPS[item.group] = group = [];
+  }
+  group.push(item);
+}
+
+console.log(COLOR_GROUPS);

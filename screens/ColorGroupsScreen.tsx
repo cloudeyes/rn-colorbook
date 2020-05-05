@@ -45,7 +45,8 @@ const shadow = ({
 };
 
 const ColorGroupsScreen = (props: IStackNavigationProps) => {
-  const [groups, setGroups] = useState(COLOR_GROUPS);
+  const [groups, setGroups] = useState(Object.keys(COLOR_GROUPS));
+  console.log('groups:', groups);
 
   /* fetch('http://192.168.1.6:8000/colors/groups')
     .then((res) => res.json())
@@ -84,17 +85,38 @@ const ColorGroupsScreen = (props: IStackNavigationProps) => {
               },
             ]}
           >
-            <Text
+            <View
               style={{
                 flex: 1,
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                padding: 5,
-                color: 'white',
-                textAlign: 'center',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
-              {item}
-            </Text>
+              <Text
+                style={{
+                  fontWeight: 'normal',
+                  fontSize: 24,
+                  color: 'black',
+                  textShadowColor: 'rgba(255, 255, 255, 0.8)',
+                  textShadowOffset: { width: 0, height: 0 },
+                  textShadowRadius: 10,
+                }}
+              >
+                {COLOR_GROUPS[item].length}
+              </Text>
+            </View>
+            <View style={{ height: 20, justifyContent: 'flex-end' }}>
+              <Text
+                style={{
+                  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                  padding: 5,
+                  color: 'white',
+                  textAlign: 'center',
+                }}
+              >
+                {item}
+              </Text>
+            </View>
           </View>
         </TouchableFeedback>
       </View>
@@ -105,7 +127,7 @@ const ColorGroupsScreen = (props: IStackNavigationProps) => {
     <View style={styles.container}>
       <FlatList
         keyExtractor={(item, _) => item}
-        data={COLOR_GROUPS}
+        data={groups}
         renderItem={renderColorGroup}
         numColumns={2}
       />
@@ -138,9 +160,8 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 80,
     minHeight: 80,
+    flexDirection: 'column',
     justifyContent: 'center',
     borderRadius: 10,
-    alignItems: 'flex-end',
-    flexDirection: 'row',
   },
 });

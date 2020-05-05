@@ -1,7 +1,10 @@
 import React from 'react';
 
 import { createAppContainer, NavigationRoute } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import {
+  createStackNavigator,
+  NavigationStackProp,
+} from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import {
   HeaderButtons,
@@ -18,6 +21,7 @@ import FavoritesScreen from '../screens/FavoritesScreen';
 import { Ionicons } from '@expo/vector-icons';
 import FiltersScreen from '../screens/FiltersScreen';
 import { COLORS } from '../constants/Colors';
+import { WEB_COLORS } from '../data/colors';
 
 const IoniconsHeaderButton = (props: any) => (
   <HeaderButton
@@ -36,6 +40,10 @@ import {
 import { NavigationParams } from 'react-navigation';
 
 export type IStackNavigationProps = NavigationStackScreenProps<any, any>;
+export type IStackNavigation = NavigationStackProp<
+  NavigationRoute,
+  NavigationParams
+>;
 export type IDrawerNavigationProps = NavigationDrawerScreenProps<any, any>;
 export type IDrawerNavigation = NavigationDrawerProp<
   NavigationRoute,
@@ -64,13 +72,16 @@ const ColorGroupsNavigator = createStackNavigator({
     screen: ColorGroupItemsScreen,
     navigationOptions: (props: any) => ({
       title: `${props.navigation.getParam('name')} 계열 색상`,
-      // headerLeft: (_) => <HeaderMenuButton navigation={props.navigation} />,
     }),
   },
   ColorDetail: {
     screen: ColorDetailScreen,
-    navigationOptions: {
-      title: '색 상세 내용',
+    navigationOptions: (props: any) => {
+      const idx = props.navigation.getParam('id') - 1;
+      const color = WEB_COLORS[idx];
+      return {
+        title: `${color.name} (${color.hex})`,
+      };
     },
   },
 });
@@ -86,7 +97,7 @@ const ColorsTabNavigator = createTabNavigator({
           color={tabInfo.tintColor}
         />
       ),
-      tabBarColor: 'blue',
+      tabBarColor: COLORS.primaryColor,
       tabBarLabel: '색상',
     },
   },
@@ -96,7 +107,7 @@ const ColorsTabNavigator = createTabNavigator({
       tabBarIcon: (tabInfo: any) => (
         <Ionicons size={25} name="ios-star" color={tabInfo.tintColor} />
       ),
-      tabBarColor: 'red',
+      tabBarColor: COLORS.favoritesColor,
       tabBarLabel: '즐겨찾기',
     },
   },
@@ -125,12 +136,18 @@ const DrawerNavigator = createDrawerNavigator({
     screen: ColorsTabNavigator,
     navigationOptions: {
       title: '색상 목록',
+      drawerIcon: ({ tintColor }) => (
+        <Ionicons size={25} color={tintColor} name="ios-color-palette" />
+      ),
     },
   },
   Filters: {
     screen: FilterNavigator,
     navigationOptions: {
       title: '필터',
+      drawerIcon: ({ tintColor }) => (
+        <Ionicons size={25} color={tintColor} name="ios-funnel" />
+      ),
     },
   },
 });
