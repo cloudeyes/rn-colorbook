@@ -1009,5 +1009,3 @@ for (const item of WEB_COLORS) {
   }
   group.push(item);
 }
-
-console.log(COLOR_GROUPS);

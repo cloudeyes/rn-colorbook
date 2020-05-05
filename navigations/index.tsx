@@ -81,6 +81,15 @@ const ColorGroupsNavigator = createStackNavigator({
       const color = WEB_COLORS[idx];
       return {
         title: `${color.name} (${color.hex})`,
+        headerRight: (_) => (
+          <HeaderButtons HeaderButtonComponent={IoniconsHeaderButton}>
+            <Item
+              title="즐겨찾기"
+              iconName="ios-star"
+              onPress={() => (props as any).navigation.toggleDrawer()}
+            />
+          </HeaderButtons>
+        ),
       };
     },
   },
@@ -116,38 +125,45 @@ const ColorsTabNavigator = createTabNavigator({
 const FilterNavigator = createStackNavigator({
   Filters: {
     screen: FiltersScreen,
-    navigationOptions: (props) => ({
-      title: '필터',
-      headerLeft: (_) => (
-        <HeaderButtons HeaderButtonComponent={IoniconsHeaderButton}>
-          <Item
-            title="menu"
-            iconName="ios-menu"
-            onPress={() => (props as any).navigation.toggleDrawer()}
-          />
-        </HeaderButtons>
-      ),
-    }),
+    navigationOptions: (props) => {
+      return {
+        title: '필터',
+        headerLeft: (_) => (
+          <HeaderButtons HeaderButtonComponent={IoniconsHeaderButton}>
+            <Item
+              title="menu"
+              iconName="ios-menu"
+              onPress={() => (props as any).navigation.toggleDrawer()}
+            />
+          </HeaderButtons>
+        ),
+      };
+    },
   },
 });
 
 const DrawerNavigator = createDrawerNavigator({
   Colors: {
     screen: ColorsTabNavigator,
-    navigationOptions: {
-      title: '색상 목록',
-      drawerIcon: ({ tintColor }) => (
-        <Ionicons size={25} color={tintColor} name="ios-color-palette" />
-      ),
+    navigationOptions: (props) => {
+      // console.log('getParam:', props.navigation.getParam('filters'));
+      return {
+        title: '색상 목록',
+        drawerIcon: ({ tintColor }) => (
+          <Ionicons size={25} color={tintColor} name="ios-color-palette" />
+        ),
+      };
     },
   },
   Filters: {
     screen: FilterNavigator,
-    navigationOptions: {
-      title: '필터',
-      drawerIcon: ({ tintColor }) => (
-        <Ionicons size={25} color={tintColor} name="ios-funnel" />
-      ),
+    navigationOptions: (props) => {
+      return {
+        title: '필터',
+        drawerIcon: ({ tintColor }) => (
+          <Ionicons size={25} color={tintColor} name="ios-funnel" />
+        ),
+      };
     },
   },
 });
