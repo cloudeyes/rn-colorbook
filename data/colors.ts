@@ -7,6 +7,7 @@ export interface ColorItem {
   group: string;
   name: string;
   hex: string;
+  isFavorite?: boolean;
   tags: { [key: string]: boolean };
 }
 

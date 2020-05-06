@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, Text, View, Switch } from 'react-native';
+import { useSelector } from 'react-redux';
 import { IDrawerNavigationProps } from '../navigations';
 
 interface IFilterItermProps {

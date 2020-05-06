@@ -1,5 +1,6 @@
 export const COLORS = {
-  menuColor: '#666',
-  primaryColor: 'dodgerblue',
-  favoritesColor: 'darkorchid',
+  menu: '#666',
+  deactivate: '#666',
+  primary: 'dodgerblue',
+  favorites: 'darkorchid',
 };

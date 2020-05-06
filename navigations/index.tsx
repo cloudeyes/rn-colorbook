@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import { createAppContainer, NavigationRoute } from 'react-navigation';
 import {
@@ -23,12 +24,40 @@ import FiltersScreen from '../screens/FiltersScreen';
 import { COLORS } from '../constants/Colors';
 import { WEB_COLORS } from '../data/colors';
 
+const colorDetailNavOpts = {
+  screen: ColorDetailScreen,
+  navigationOptions: (props: any) => {
+    const getParam = props.navigation.getParam;
+    const idx = getParam('id') - 1;
+    const color = WEB_COLORS[idx];
+    const toggleFavorite = getParam('toggleFavorite');
+    const isFavorite = getParam('isFavorite');
+    const iconColor = isFavorite && COLORS.primary;
+    console.log('isFavorite:', isFavorite);
+    return {
+      title: `${color.name} (${color.hex})`,
+      headerRight: (_) => {
+        return (
+          <HeaderButtons HeaderButtonComponent={IoniconsHeaderButton}>
+            <Item
+              title="즐겨찾기"
+              iconName={isFavorite ? 'ios-star' : 'ios-star-outline'}
+              iconColor={iconColor}
+              onPress={toggleFavorite}
+            />
+          </HeaderButtons>
+        );
+      },
+    };
+  },
+};
+
 const IoniconsHeaderButton = (props: any) => (
   <HeaderButton
     {...props}
+    color={props.iconColor || COLORS.menu}
     IconComponent={Ionicons}
     iconSize={23}
-    color={COLORS.menuColor}
   />
 );
 
@@ -74,18 +103,20 @@ const ColorGroupsNavigator = createStackNavigator({
       title: `${props.navigation.getParam('name')} 계열 색상`,
     }),
   },
-  ColorDetail: {
-    screen: ColorDetailScreen,
-    navigationOptions: (props: any) => {
-      const idx = props.navigation.getParam('id') - 1;
-      const color = WEB_COLORS[idx];
+  ColorDetail: colorDetailNavOpts,
+});
+
+const FavoritesNavigator = createStackNavigator({
+  Favorites: {
+    screen: FavoritesScreen,
+    navigationOptions: (props) => {
       return {
-        title: `${color.name} (${color.hex})`,
-        headerRight: (_) => (
+        title: '즐겨찾기',
+        headerLeft: (_) => (
           <HeaderButtons HeaderButtonComponent={IoniconsHeaderButton}>
             <Item
-              title="즐겨찾기"
-              iconName="ios-star"
+              title="menu"
+              iconName="ios-menu"
               onPress={() => (props as any).navigation.toggleDrawer()}
             />
           </HeaderButtons>
@@ -93,6 +124,7 @@ const ColorGroupsNavigator = createStackNavigator({
       };
     },
   },
+  FavoriteColorDetail: colorDetailNavOpts,
 });
 
 const ColorsTabNavigator = createTabNavigator({
@@ -106,17 +138,17 @@ const ColorsTabNavigator = createTabNavigator({
           color={tabInfo.tintColor}
         />
       ),
-      tabBarColor: COLORS.primaryColor,
+      tabBarColor: COLORS.primary,
       tabBarLabel: '색상',
     },
   },
   Favorites: {
-    screen: FavoritesScreen,
+    screen: FavoritesNavigator,
     navigationOptions: {
       tabBarIcon: (tabInfo: any) => (
         <Ionicons size={25} name="ios-star" color={tabInfo.tintColor} />
       ),
-      tabBarColor: COLORS.favoritesColor,
+      tabBarColor: COLORS.favorites,
       tabBarLabel: '즐겨찾기',
     },
   },

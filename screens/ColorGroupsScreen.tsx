@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
-import { Text, View, FlatList, Platform, ScrollView } from 'react-native';
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  Platform,
+} from 'react-native';
+import { useHeaderHeight } from 'react-navigation-stack';
+
 import { COLOR_GROUPS } from '../data/colors';
 import TouchableFeedback from '../components/TouchableFeedback';
-
-import { useHeaderHeight } from 'react-navigation-stack';
 import { getTabBarHeight } from '../navigations/TabBar';
-import { Dimensions, StyleSheet } from 'react-native';
 import { IStackNavigationProps } from '../navigations';
 
 interface IShadowProps {

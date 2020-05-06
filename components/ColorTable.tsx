@@ -10,22 +10,25 @@ const COLOR_BAR_WIDTH = 120;
 
 interface IColorTableProps {
   colors: ColorItem[];
+  favoriteIds?: Set<number>;
   inverted?: boolean; // 배경색 대신 전경색 표시
   style?: StyleSheet.NamedStyles<any> | object;
   backgroundColor?: string;
   navigation?: IStackNavigation;
+  routeName?: string;
 }
 
 interface ListItem {
   idx: number;
   backgroundColor?: string;
   navigation: IStackNavigation;
+  routeName: string;
   color: ColorItem;
 }
 
 const renderColorItem = (props: { item: ListItem }) => {
   const item = props.item;
-  const { idx, color, navigation } = props.item;
+  const { idx, color, navigation, routeName } = props.item;
   const textColor = item.backgroundColor ? color.hex : 'black';
   const textShadowStyle = item.backgroundColor
     ? {
@@ -65,12 +68,15 @@ const renderColorItem = (props: { item: ListItem }) => {
   ) : (
     <TouchableFeedback
       key={color.id}
-      onPress={() =>
-        navigation &&
-        navigation.navigate('ColorDetail', {
-          id: color.id,
-        })
-      }
+      onPress={() => {
+        if (navigation) {
+          const { id, isFavorite } = color;
+          navigation.navigate(routeName, {
+            id,
+            isFavorite,
+          });
+        }
+      }}
     >
       {itemView}
     </TouchableFeedback>
@@ -78,10 +84,19 @@ const renderColorItem = (props: { item: ListItem }) => {
 };
 
 const ColorTable = (props: IColorTableProps) => {
-  const { colors, backgroundColor, style, navigation } = props;
+  const {
+    colors,
+    favoriteIds: favorites,
+    backgroundColor,
+    style,
+    navigation,
+    routeName,
+  } = props;
   const colorsWithIndex = colors.map((color, idx) => ({
     idx,
+    isFavorite: favorites && favorites.has(color.id),
     navigation,
+    routeName,
     backgroundColor,
     color,
   }));
