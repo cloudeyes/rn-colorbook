@@ -33,7 +33,6 @@ const colorDetailNavOpts = {
     const toggleFavorite = getParam('toggleFavorite');
     const isFavorite = getParam('isFavorite');
     const iconColor = isFavorite && COLORS.primary;
-    console.log('isFavorite:', isFavorite);
     return {
       title: `${color.name} (${color.hex})`,
       headerRight: (_) => {

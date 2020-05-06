@@ -13,6 +13,7 @@ import { COLOR_GROUPS } from '../data/colors';
 import TouchableFeedback from '../components/TouchableFeedback';
 import { getTabBarHeight } from '../navigations/TabBar';
 import { IStackNavigationProps } from '../navigations';
+import { dbExecute } from '../store/reducers/colors';
 
 interface IShadowProps {
   rgb: any;
@@ -52,8 +53,6 @@ const shadow = ({
 
 const ColorGroupsScreen = (props: IStackNavigationProps) => {
   const [groups, setGroups] = useState(Object.keys(COLOR_GROUPS));
-  const filters = props.navigation.getParam('filters') || {};
-  console.log('filters:', filters);
 
   /* fetch('http://192.168.1.6:8000/colors/groups')
     .then((res) => res.json())
